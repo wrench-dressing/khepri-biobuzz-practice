@@ -15,4 +15,7 @@ public class SomeTeleOp extends RobotOpMode {
         double turn = -gamepad1.right_stick_x;
         robot.drivetrain.drive(forward, strafe, turn);
     }
+    protected void opModeStart() {
+
+    }
 }

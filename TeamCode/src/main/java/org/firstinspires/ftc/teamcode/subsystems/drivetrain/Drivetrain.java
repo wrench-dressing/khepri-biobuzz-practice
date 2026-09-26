@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.pedro.Constants;
 import org.firstinspires.ftc.teamcode.robot.Robot;
 
 public class Drivetrain {
-    private final Follower follower;
+    public final Follower follower;
     private final Mecanum mecanum;
 
     public Drivetrain(Robot robot) {

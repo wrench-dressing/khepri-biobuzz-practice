@@ -8,14 +8,18 @@ public abstract class RobotOpMode extends LinearOpMode {
 
     protected abstract void opModeInit();
 
+    protected abstract void opModeStart();
     protected abstract void opModeLoop();
 
     @Override
     public void runOpMode() throws InterruptedException {
+        Scheduler.reset();
         robot = new Robot(hardwareMap, telemetry);
 
         opModeInit();
         waitForStart();
+        opModeStart();
+
         while (opModeIsActive()) {
             opModeLoop();
             telemetry.update();

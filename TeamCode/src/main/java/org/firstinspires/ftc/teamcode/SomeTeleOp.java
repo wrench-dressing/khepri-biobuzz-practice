@@ -7,7 +7,7 @@ import org.firstinspires.ftc.teamcode.robot.RobotOpMode;
 @TeleOp(name = "Some TeleOp")
 public class SomeTeleOp extends RobotOpMode {
     protected void opModeInit() {
-
+        controller.rightTrigger.whileTrue(robot.intake.intake());
     }
 
     protected void opModeLoop() {
@@ -15,11 +15,6 @@ public class SomeTeleOp extends RobotOpMode {
         double strafe = -gamepad1.left_stick_x;
         double turn = -gamepad1.right_stick_x;
         robot.drivetrain.drive(forward, strafe, turn);
-        if (gamepad1.aWasPressed()) {
-            robot.intake.startIntake();
-        } else if (gamepad1.aWasReleased()) {
-            robot.intake.stopIntake();
-        }
     }
 
     protected void opModeStart() {

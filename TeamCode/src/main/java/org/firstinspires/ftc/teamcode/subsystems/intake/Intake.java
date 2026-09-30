@@ -1,18 +1,33 @@
 package org.firstinspires.ftc.teamcode.subsystems.intake;
 
+import com.pedropathing.ivy.Command;
+import com.pedropathing.revhub.drivetrains.CachedMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.teamcode.robot.Robot;
 
 public class Intake {
-    DcMotorEx intakeFront;
+    private final CachedMotor intakeFront;
+
     public Intake(Robot robot) {
-        intakeFront = robot.hardwareMap.get(DcMotorEx.class, "leftintake");
+        intakeFront = new CachedMotor(robot.hardwareMap.get(DcMotorEx.class, "leftintake"), 0.1);
     }
-    public void startIntake() {
-        intakeFront.setPower(1);
+
+    public Command intake() {
+        return Command.build()
+                .setExecute(() -> intakeFront.setPower(1))
+                .setEnd((endCondition) -> stop())
+                .requiring(this);
     }
-    public void stopIntake() {
+
+    public Command outtake() {
+        return Command.build()
+                .setExecute(() -> intakeFront.setPower(-1))
+                .setEnd((endCondition) -> stop())
+                .requiring(this);
+    }
+
+    public void stop() {
         intakeFront.setPower(0);
     }
 }

@@ -15,6 +15,8 @@ public class SomeTeleOp extends RobotOpMode {
         double strafe = -gamepad1.left_stick_x;
         double turn = -gamepad1.right_stick_x;
         robot.drivetrain.drive(forward, strafe, turn);
+
+        telemetry.addData("Loop time (ms)", robot.deltaTime() * 1000);
     }
 
     protected void opModeStart() {

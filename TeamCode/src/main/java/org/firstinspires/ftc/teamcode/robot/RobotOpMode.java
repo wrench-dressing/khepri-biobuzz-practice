@@ -29,6 +29,7 @@ public abstract class RobotOpMode extends LinearOpMode {
             opModeLoop();
             telemetry.update();
             Scheduler.execute();
+            robot.drivetrain.follower.update();
         }
     }
 }

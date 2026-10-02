@@ -15,10 +15,10 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.pedro.Constants;
+import org.firstinspires.ftc.teamcode.robot.RobotOpMode;
 
 @Autonomous(name = "Test Auto")
-public class TestAuto extends OpMode {
-    private Follower follower;
+public class TestAuto extends RobotOpMode {
     private final PoseFactory poseFactory = PoseFactory.degrees();
     // Poses
     private final Pose startPose = poseFactory.of(0, 0, 0);
@@ -33,29 +33,24 @@ public class TestAuto extends OpMode {
 
     private Command autoRoutine() {
         return sequential(
-                follow(follower, startToScore())
+                follow(robot.drivetrain.follower, startToScore())
         );
     }
     @Override
-    public void init() {
-        Scheduler.reset();
-        follower = Constants.create(hardwareMap);
-        follower.setPose(startPose);
-        follower.update();
+    protected void opModeInit() {
+        robot.drivetrain.follower.setPose(startPose);
+        robot.drivetrain.follower.update();
     }
     @Override
-    public void start() {
+    protected void opModeStart() {
         schedule(autoRoutine());
     }
     @Override
-    public void loop() {
-        follower.update();
-        Scheduler.execute();
+    protected void opModeLoop() {
         // add your other methods needed in the loop here
-        telemetry.addData("X", follower.pose().x());
-        telemetry.addData("Y", follower.pose().y());
-        telemetry.addData("Heading", Math.toDegrees(follower.pose().heading()));
-        telemetry.addData("Follower Mode", follower.mode());
-        telemetry.update();
+        telemetry.addData("X", robot.drivetrain.follower.pose().x());
+        telemetry.addData("Y", robot.drivetrain.follower.pose().y());
+        telemetry.addData("Heading", Math.toDegrees(robot.drivetrain.follower.pose().heading()));
+        telemetry.addData("Follower Mode", robot.drivetrain.follower.mode());
     }
 }

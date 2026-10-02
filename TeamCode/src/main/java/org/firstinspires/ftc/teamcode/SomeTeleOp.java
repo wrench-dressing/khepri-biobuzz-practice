@@ -7,7 +7,11 @@ import org.firstinspires.ftc.teamcode.robot.RobotOpMode;
 @TeleOp(name = "Some TeleOp")
 public class SomeTeleOp extends RobotOpMode {
     protected void opModeInit() {
-        controller.rightTrigger.whileTrue(robot.intake.intake());
+        controller.rightTrigger.whileTrue(robot.intake.intakeFront());
+        controller.leftTrigger.whileTrue(robot.intake.intakeBack());
+        controller.rightBumper.whileTrue(robot.intake.outtakeThroughFront());
+        controller.leftBumper.whileTrue(robot.intake.outtakeThroughBack());
+
     }
 
     protected void opModeLoop() {

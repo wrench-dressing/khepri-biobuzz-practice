@@ -88,8 +88,12 @@ public class CommandController {
     public Trigger leftTrigger = new Trigger(() -> gamepad.left_trigger_pressed);
     public Trigger rightTrigger = new Trigger(() -> gamepad.right_trigger_pressed);
 
+    public Trigger rightBumper = new Trigger(() -> gamepad.right_bumper);
+    public Trigger leftBumper = new Trigger(() -> gamepad.left_bumper);
+
     public Trigger start = new Trigger(() -> gamepad.start);
     public Trigger back = new Trigger(() -> gamepad.back);
+
 
     public CommandController(Gamepad gamepad) {
         this.gamepad = gamepad;

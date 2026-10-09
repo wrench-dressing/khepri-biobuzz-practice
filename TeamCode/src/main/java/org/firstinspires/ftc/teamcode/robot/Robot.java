@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.robot;
 import com.pedropathing.ivy.Scheduler;
 import com.pedropathing.ivy.commands.Commands;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -14,9 +15,11 @@ public class Robot {
     public Telemetry telemetry;
     public Drivetrain drivetrain;
     public Intake intake;
+    public IMU imu;
 
     private double _deltaTime = 0;
     private final ElapsedTime deltaTimeTimer = new ElapsedTime();
+
     public double deltaTime() {
         return _deltaTime;
     }
@@ -31,6 +34,7 @@ public class Robot {
             deltaTimeTimer.reset();
         }));
 
+        imu = hardwareMap.get(IMU.class, "imu");
         drivetrain = new Drivetrain(this);
         intake = new Intake(this);
     }

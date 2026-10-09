@@ -20,15 +20,15 @@ public class TestAuto extends RobotOpMode {
     private final Pose endPose = PoseFactory.degrees().of(30,0,0);
     private Command autoRoutine() {
         return race(
-                follow(robot.drivetrain.follower, line(startPose, endPose).linear(startPose,endPose)),
-                robot.intake.intakeFront()
+                follow(drivetrain.follower, line(startPose, endPose).linear(startPose,endPose)),
+                intake.intakeFront()
         );
     }
 
     @Override
     protected void opModeInit() {
-        robot.drivetrain.follower.setPose(startPose);
-        robot.drivetrain.follower.update();
+        drivetrain.follower.setPose(startPose);
+        drivetrain.follower.update();
     }
 
     @Override
@@ -39,9 +39,9 @@ public class TestAuto extends RobotOpMode {
     @Override
     protected void opModeLoop() {
         // add your other methods needed in the loop here
-        telemetry.addData("X", robot.drivetrain.follower.pose().x());
-        telemetry.addData("Y", robot.drivetrain.follower.pose().y());
-        telemetry.addData("Heading", Math.toDegrees(robot.drivetrain.follower.pose().heading()));
-        telemetry.addData("Follower Mode", robot.drivetrain.follower.mode());
+        telemetry.addData("X", drivetrain.follower.pose().x());
+        telemetry.addData("Y", drivetrain.follower.pose().y());
+        telemetry.addData("Heading", Math.toDegrees(drivetrain.follower.pose().heading()));
+        telemetry.addData("Follower Mode", drivetrain.follower.mode());
     }
 }

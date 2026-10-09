@@ -4,14 +4,28 @@ import com.pedropathing.ivy.Command;
 import com.pedropathing.ivy.Scheduler;
 import com.pedropathing.ivy.commands.Commands;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.subsystems.drivetrain.Drivetrain;
+import org.firstinspires.ftc.teamcode.subsystems.intake.Intake;
 import org.firstinspires.ftc.teamcode.utils.Alliance;
 import org.firstinspires.ftc.teamcode.utils.CommandController;
 
 public abstract class RobotOpMode extends LinearOpMode {
     public static Alliance alliance = Alliance.Red;
 
-    protected Robot robot;
+    public Drivetrain drivetrain;
+    public Intake intake;
+    public IMU imu;
+
+    private double _deltaTime = 0;
+    private final ElapsedTime deltaTimeTimer = new ElapsedTime();
+
+    public double deltaTime() {
+        return _deltaTime;
+    }
+
     protected CommandController controller;
 
     protected abstract void opModeInit();
@@ -22,8 +36,8 @@ public abstract class RobotOpMode extends LinearOpMode {
 
     protected Command resetHeading() {
         return Commands.instant(() -> {
-            robot.imu.resetYaw();
-            robot.drivetrain.follower.localizer.setHeading(0);
+            imu.resetYaw();
+            drivetrain.follower.localizer.setHeading(0);
         });
     }
 
@@ -36,7 +50,16 @@ public abstract class RobotOpMode extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         Scheduler.reset();
-        robot = new Robot(hardwareMap, telemetry);
+        deltaTimeTimer.reset();
+        Scheduler.schedule(Commands.infinite(() -> {
+            _deltaTime = deltaTimeTimer.seconds();
+            deltaTimeTimer.reset();
+        }));
+
+        imu = hardwareMap.get(IMU.class, "imu");
+        drivetrain = new Drivetrain(this);
+        intake = new Intake(this);
+
         controller = new CommandController(gamepad1);
 
         opModeInit();
@@ -47,7 +70,7 @@ public abstract class RobotOpMode extends LinearOpMode {
             opModeLoop();
             telemetry.update();
             Scheduler.execute();
-            robot.drivetrain.follower.update();
+            drivetrain.follower.update();
         }
     }
 }

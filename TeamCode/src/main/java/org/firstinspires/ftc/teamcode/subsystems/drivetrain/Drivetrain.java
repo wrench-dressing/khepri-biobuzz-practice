@@ -9,7 +9,6 @@ import com.pedropathing.math.Velocity;
 import com.pedropathing.revhub.drivetrains.Mecanum;
 
 import org.firstinspires.ftc.teamcode.pedro.Constants;
-import org.firstinspires.ftc.teamcode.robot.Robot;
 import org.firstinspires.ftc.teamcode.robot.RobotOpMode;
 
 public class Drivetrain {
@@ -19,14 +18,12 @@ public class Drivetrain {
 
     public final Follower follower;
     private final Mecanum mecanum;
-    private final Robot robot;
 
     private final Controller forwardController = pfControl(0.03, 0.85);
     private final Controller strafeController = pfControl(0.025, 0.8);
     private final Controller headingController = pfControl(0.25, 0.6);
 
-    public Drivetrain(Robot _robot) {
-        robot = _robot;
+    public Drivetrain(RobotOpMode robot) {
         follower = Constants.create(robot.hardwareMap);
         mecanum = new Mecanum(robot.hardwareMap, Constants.drivetrainConfig);
     }

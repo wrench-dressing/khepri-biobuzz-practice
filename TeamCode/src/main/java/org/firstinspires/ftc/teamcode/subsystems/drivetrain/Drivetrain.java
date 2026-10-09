@@ -3,12 +3,14 @@ package org.firstinspires.ftc.teamcode.subsystems.drivetrain;
 import com.pedropathing.controllers.Controller;
 import com.pedropathing.drivetrain.DrivePowers;
 import com.pedropathing.follower.Follower;
+import com.pedropathing.math.Pose;
 import com.pedropathing.math.Vector2D;
 import com.pedropathing.math.Velocity;
 import com.pedropathing.revhub.drivetrains.Mecanum;
 
 import org.firstinspires.ftc.teamcode.pedro.Constants;
 import org.firstinspires.ftc.teamcode.robot.Robot;
+import org.firstinspires.ftc.teamcode.robot.RobotOpMode;
 
 public class Drivetrain {
     private static Controller pfControl(double kP, double kF) {
@@ -43,6 +45,13 @@ public class Drivetrain {
                 strafeController.calculate(desired.vy, errors.vy),
                 headingController.calculate(desired.omega, errors.omega)
         ), true);
+    }
+
+    public void driveFieldCentric(double forward, double strafe, double turn) {
+        Pose pose = follower.pose();
+        Vector2D translation = Vector2D.cartesian(forward, strafe);
+        translation = translation.rotate(-(pose.heading() + RobotOpMode.alliance.angleOffset()));
+        driveRobotCentric(translation.x(), translation.y(), turn);
     }
 
     private Velocity robotCentricVelocity() {

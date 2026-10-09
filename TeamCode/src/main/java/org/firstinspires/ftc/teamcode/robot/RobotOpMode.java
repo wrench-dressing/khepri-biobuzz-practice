@@ -5,9 +5,12 @@ import com.pedropathing.ivy.Scheduler;
 import com.pedropathing.ivy.commands.Commands;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.teamcode.utils.Alliance;
 import org.firstinspires.ftc.teamcode.utils.CommandController;
 
 public abstract class RobotOpMode extends LinearOpMode {
+    public static Alliance alliance = Alliance.Red;
+
     protected Robot robot;
     protected CommandController controller;
 
@@ -21,6 +24,12 @@ public abstract class RobotOpMode extends LinearOpMode {
         return Commands.instant(() -> {
             robot.imu.resetYaw();
             robot.drivetrain.follower.localizer.setHeading(0);
+        });
+    }
+
+    protected Command setAlliance(Alliance newAlliance) {
+        return Commands.instant(() -> {
+            alliance = newAlliance;
         });
     }
 

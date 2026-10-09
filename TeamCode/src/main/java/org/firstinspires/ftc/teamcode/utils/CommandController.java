@@ -93,6 +93,8 @@ public class CommandController {
 
     public Trigger start = new Trigger(() -> gamepad.start);
     public Trigger back = new Trigger(() -> gamepad.back);
+    public Trigger leftStickButton = new Trigger(() -> gamepad.left_stick_button);
+    public Trigger rightStickButton = new Trigger(() -> gamepad.right_stick_button);
 
 
     public CommandController(Gamepad gamepad) {

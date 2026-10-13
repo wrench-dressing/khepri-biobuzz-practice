@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.pedropathing.ivy.Scheduler;
+import com.pedropathing.math.Vector2D;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.robot.RobotOpMode;
@@ -12,22 +14,24 @@ public class SomeTeleOp extends RobotOpMode {
         controller.leftTrigger.whileTrue(intake.intakeBack());
         controller.rightBumper.whileTrue(intake.outtakeThroughFront());
         controller.leftBumper.whileTrue(intake.outtakeThroughBack());
+        controller.west.onTrue(drivetrain.autoTarget());
         controller.back.onTrue(resetHeading());
+
+        controller.start.onTrue(drivetrain.updatePositionFosho(Vector2D.cartesian(7, 7)));
 
         controller.leftStickButton.onTrue(setAlliance(Alliance.Red));
         controller.rightStickButton.onTrue(setAlliance(Alliance.Blue));
     }
 
-    protected void opModeLoop() {
-        double forward = -gamepad1.left_stick_y;
-        double strafe = -gamepad1.left_stick_x;
-        double turn = -gamepad1.right_stick_x;
-        drivetrain.driveRobotCentric(forward, strafe, turn);
-
-        telemetry.addData("Loop time (ms)", deltaTime() * 1000);
+    @Override
+    protected void opModeStart() {
+        Scheduler.schedule(drivetrain.drive(() -> -gamepad1.left_stick_y, () -> -gamepad1.left_stick_x, () -> -gamepad1.right_stick_x));
     }
 
-    protected void opModeStart() {
-
+    protected void opModeLoop() {
+        telemetry.addData("Pose X", Math.round(drivetrain.follower.pose().x()));
+        telemetry.addData("Pose Y", Math.round(drivetrain.follower.pose().y()));
+        telemetry.addData("Heading", Math.round(drivetrain.follower.pose().heading()));
+        telemetry.addData("Loop time (ms)", deltaTime() * 1000);
     }
 }

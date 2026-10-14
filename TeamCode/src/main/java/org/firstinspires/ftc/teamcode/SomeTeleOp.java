@@ -14,7 +14,7 @@ public class SomeTeleOp extends RobotOpMode {
         controller.leftTrigger.whileTrue(intake.intakeBack());
         controller.rightBumper.whileTrue(intake.outtakeThroughFront());
         controller.leftBumper.whileTrue(intake.outtakeThroughBack());
-        controller.west.onTrue(drivetrain.autoTarget());
+        controller.west.whileTrue(drivetrain.autoTarget());
         controller.back.onTrue(resetHeading());
 
         controller.start.onTrue(drivetrain.updatePositionFosho(Vector2D.cartesian(7, 7)));

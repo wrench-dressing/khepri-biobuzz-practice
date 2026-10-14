@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.subsystems.drivetrain;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.follower.ManualDrive;
 import com.pedropathing.ivy.Command;
+import com.pedropathing.ivy.behaviors.InterruptedBehavior;
 import com.pedropathing.ivy.commands.Commands;
 import com.pedropathing.math.Vector2D;
 
@@ -47,6 +48,6 @@ public class Drivetrain {
                                 follower.pose().heading()
                         )
                 )
-        );
+        ).setInterruptedBehavior(InterruptedBehavior.SUSPEND);
     }
 }

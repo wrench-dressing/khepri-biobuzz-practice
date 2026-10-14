@@ -1,16 +1,20 @@
 package org.firstinspires.ftc.teamcode.utils;
 
 public enum Alliance {
-    Blue(Math.PI),
-    Red(0);
+    Blue("Blue", Math.PI),
+    Red("Red", 0);
 
-    private double angleOffset; // for field relative
+    private final String allianceName;
+    private final double angleOffset; // for field relative
+    public String allianceName() {
+        return allianceName;
+    }
     public double angleOffset() {
         return angleOffset;
     }
 
-    Alliance(double angleOffset) {
+    Alliance(String allianceName, double angleOffset) {
+        this.allianceName = allianceName;
         this.angleOffset = angleOffset;
     }
-
 }

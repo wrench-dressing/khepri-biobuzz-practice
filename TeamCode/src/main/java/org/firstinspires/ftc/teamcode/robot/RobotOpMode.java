@@ -3,8 +3,6 @@ package org.firstinspires.ftc.teamcode.robot;
 import com.pedropathing.ivy.Command;
 import com.pedropathing.ivy.Scheduler;
 import com.pedropathing.ivy.commands.Commands;
-import com.pedropathing.math.Pose;
-import com.pedropathing.math.Vector2D;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -31,6 +29,8 @@ public abstract class RobotOpMode extends LinearOpMode {
     protected CommandController controller;
 
     protected abstract void opModeInit();
+
+    protected abstract void opModeInitLoop();
 
     protected abstract void opModeStart();
 
@@ -66,12 +66,18 @@ public abstract class RobotOpMode extends LinearOpMode {
         controller = new CommandController(gamepad1);
 
         opModeInit();
+
+        while (opModeInInit()) {
+            opModeInitLoop();
+            Scheduler.execute();
+            telemetry.update();
+        }
+
         waitForStart();
         opModeStart();
 
         while (opModeIsActive()) {
             opModeLoop();
-            telemetry.update();
             Scheduler.execute();
             drivetrain.follower.update();
         }

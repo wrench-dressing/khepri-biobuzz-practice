@@ -24,6 +24,11 @@ public class SomeTeleOp extends RobotOpMode {
     }
 
     @Override
+    protected void opModeInitLoop() {
+
+    }
+
+    @Override
     protected void opModeStart() {
         Scheduler.schedule(drivetrain.drive(() -> -gamepad1.left_stick_y, () -> -gamepad1.left_stick_x, () -> -gamepad1.right_stick_x));
     }

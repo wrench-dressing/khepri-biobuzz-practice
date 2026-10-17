@@ -13,14 +13,14 @@ public class TestAuto extends AutoOpMode {
     private final LazyPose endPose = () -> poseFactory.of(0, 10, 0);
 
     @Override
-    Pose startPose() {
-        return poseFactory.of(0, 0, 0);
+    LazyPose startPose() {
+        return () -> poseFactory.of(0, 0, 0);
     }
 
     @Override
     Command autoRoutine() {
         return race(
-                follow(drivetrain.follower, line(startPose(), endPose.get()).linear(startPose(), endPose.get())),
+                drivetrain.follow(line(startPose().get(), endPose.get()).linear(startPose().get(), endPose.get())),
                 intake.intakeFront()
         );
     }

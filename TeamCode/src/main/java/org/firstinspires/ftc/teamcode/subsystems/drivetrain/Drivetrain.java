@@ -3,9 +3,14 @@ package org.firstinspires.ftc.teamcode.subsystems.drivetrain;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.follower.ManualDrive;
 import com.pedropathing.ivy.Command;
+import com.pedropathing.ivy.CommandBuilder;
+import com.pedropathing.ivy.Scheduler;
 import com.pedropathing.ivy.behaviors.InterruptedBehavior;
 import com.pedropathing.ivy.commands.Commands;
+import com.pedropathing.ivy.pedro.PedroCommands;
+import com.pedropathing.math.Pose;
 import com.pedropathing.math.Vector2D;
+import com.pedropathing.paths.Path;
 
 import org.firstinspires.ftc.teamcode.pedro.Constants;
 import org.firstinspires.ftc.teamcode.robot.RobotOpMode;
@@ -15,10 +20,28 @@ import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
 public class Drivetrain {
-    public final Follower follower;
+    private final Follower follower;
 
     public Drivetrain(RobotOpMode robot) {
         follower = Constants.create(robot.hardwareMap);
+        Scheduler.schedule(Commands.infinite(follower::update));
+    }
+
+    public void resetHeading() {
+        follower.localizer.setHeading(0);
+        follower.manual(0, 0, 0);
+    }
+
+    public Pose pose() {
+        return follower.pose();
+    }
+
+    public void setPose(Pose pose) {
+        follower.setPose(pose);
+    }
+
+    public CommandBuilder follow(Path path) {
+        return PedroCommands.follow(follower, path);
     }
 
     public Command updatePositionForSure(Vector2D position) {

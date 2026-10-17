@@ -2,10 +2,8 @@ package org.firstinspires.ftc.teamcode.autos;
 
 import static com.pedropathing.api.Paths.line;
 import static com.pedropathing.ivy.groups.Groups.race;
-import static com.pedropathing.ivy.pedro.PedroCommands.follow;
 
 import com.pedropathing.ivy.Command;
-import com.pedropathing.math.Pose;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 @Autonomous(name = "Test Auto")

@@ -47,9 +47,7 @@ public abstract class RobotOpMode extends LinearOpMode {
     }
 
     protected Command setAlliance(Alliance newAlliance) {
-        return Commands.instant(() -> {
-            alliance = newAlliance;
-        });
+        return Commands.instant(() -> alliance = newAlliance);
     }
 
     /// Gets the current cell we want to aim at based on where the robot is on the field and the

@@ -12,6 +12,7 @@ import org.firstinspires.ftc.teamcode.robot.RobotOpMode;
 import org.firstinspires.ftc.teamcode.utils.Cell;
 
 import java.util.function.DoubleSupplier;
+import java.util.function.Supplier;
 
 public class Drivetrain {
     public final Follower follower;
@@ -20,16 +21,16 @@ public class Drivetrain {
         follower = Constants.create(robot.hardwareMap);
     }
 
-    public Command updatePositionFosho(Vector2D position) {
+    public Command updatePositionForSure(Vector2D position) {
         return Commands.instant(() -> {
             follower.setPose(position.toPose(follower.localizer.pose().heading()));
             follower.manual(0, 0, 0); // clears hold state
         });
     }
 
-    public Command autoTarget() {
+    public Command autoTarget(Supplier<Cell> cellSupplier) {
         return Commands.infinite(() -> {
-            Cell cell = Cell.RedPositive;
+            Cell cell = cellSupplier.get();
             Vector2D cellPosition = cell.cellPosition();
             Vector2D robotPosition = follower.pose().toVector2D();
             double angleFounding = cellPosition.minus(robotPosition).theta();

@@ -52,7 +52,7 @@ public class Constants {
                 c.coast.set(Controller.proportionalFeedforward(0.012742187083270528));
                 c.brake.set(Controller.proportionalFeedforward(0.010830859020779949));
 
-                c.headingFeedback.set(Controller.proportional(8.114276541879274 / 2.5));
+                c.headingFeedback.set(Controller.proportional(3));
                 c.headingBrakeCoefficients.set(Vector2D.cartesian(0.09538444829648754, 0.00507882986520168));
 
                 c.linearBrakeCoefficients.set(Matrix.diag(0.1321093773726465, 0.044454114981775365));

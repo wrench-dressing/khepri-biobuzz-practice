@@ -11,6 +11,7 @@ import org.firstinspires.ftc.teamcode.subsystems.drivetrain.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystems.intake.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.vision.Vision;
 import org.firstinspires.ftc.teamcode.utils.Alliance;
+import org.firstinspires.ftc.teamcode.utils.Cell;
 import org.firstinspires.ftc.teamcode.utils.CommandController;
 
 public abstract class RobotOpMode extends LinearOpMode {
@@ -40,8 +41,7 @@ public abstract class RobotOpMode extends LinearOpMode {
 
     protected Command resetHeading() {
         return Commands.instant(() -> {
-            drivetrain.follower.manual(0, 0, 0); // clears hold state
-            drivetrain.follower.localizer.setHeading(0);
+            drivetrain.resetHeading();
             imu.resetYaw();
         });
     }
@@ -50,6 +50,17 @@ public abstract class RobotOpMode extends LinearOpMode {
         return Commands.instant(() -> {
             alliance = newAlliance;
         });
+    }
+
+    /// Gets the current cell we want to aim at based on where the robot is on the field and the
+    /// current alliance
+    protected Cell getTargetCell() {
+        boolean positiveSide = drivetrain.pose().y() > 72;
+        if (alliance == Alliance.Red) {
+            return positiveSide ? Cell.RedPositive : Cell.RedNegative;
+        } else {
+            return positiveSide ? Cell.BluePositive : Cell.BlueNegative;
+        }
     }
 
     @Override
@@ -82,7 +93,6 @@ public abstract class RobotOpMode extends LinearOpMode {
         while (opModeIsActive()) {
             opModeLoop();
             Scheduler.execute();
-            drivetrain.follower.update();
             telemetry.update();
         }
     }

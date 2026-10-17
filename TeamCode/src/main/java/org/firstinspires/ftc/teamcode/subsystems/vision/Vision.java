@@ -16,27 +16,6 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class Vision {
-    public static class SeenCell {
-        public Cell cell;
-        public double tx;
-
-        private SeenCell(Cell _cell, double _tx) {
-            cell = _cell;
-            tx = _tx;
-        }
-
-        @NonNull
-        public String toString() {
-            return cell + "(tx: " + Math.round(tx * 10) / 10 + ")";
-        }
-
-        private static SeenCell fromFiducial(LLResultTypes.FiducialResult fiducialResult) {
-            Cell cell = Cell.fromFiducialId(fiducialResult.getFiducialId());
-            if (cell == null) return null;
-            return new SeenCell(cell, fiducialResult.getTargetXDegrees());
-        }
-    }
-
     private final Limelight3A limelight;
     private final Telemetry telemetry;
 
@@ -47,11 +26,11 @@ public class Vision {
         telemetry = robot.telemetry;
     }
 
-    public List<SeenCell> cellsICanSee() {
+    public List<Cell> cellsICanSee() {
         LLResult result = limelight.getLatestResult();
         return result.getFiducialResults()
                 .stream()
-                .map(SeenCell::fromFiducial)
+                .map(aprilTag -> Cell.fromFiducialId(aprilTag.getFiducialId()))
                 .distinct()
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());

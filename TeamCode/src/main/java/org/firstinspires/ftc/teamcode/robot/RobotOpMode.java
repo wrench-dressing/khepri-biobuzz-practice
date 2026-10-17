@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.subsystems.drivetrain.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystems.intake.Intake;
+import org.firstinspires.ftc.teamcode.subsystems.vision.Vision;
 import org.firstinspires.ftc.teamcode.utils.Alliance;
 import org.firstinspires.ftc.teamcode.utils.CommandController;
 
@@ -17,6 +18,7 @@ public abstract class RobotOpMode extends LinearOpMode {
 
     public Drivetrain drivetrain;
     public Intake intake;
+    public Vision vision;
     public IMU imu;
 
     private double _deltaTime = 0;
@@ -61,6 +63,7 @@ public abstract class RobotOpMode extends LinearOpMode {
 
         imu = hardwareMap.get(IMU.class, "imu");
         drivetrain = new Drivetrain(this);
+        vision = new Vision(this);
         intake = new Intake(this);
 
         controller = new CommandController(gamepad1);
@@ -80,6 +83,7 @@ public abstract class RobotOpMode extends LinearOpMode {
             opModeLoop();
             Scheduler.execute();
             drivetrain.follower.update();
+            telemetry.update();
         }
     }
 }

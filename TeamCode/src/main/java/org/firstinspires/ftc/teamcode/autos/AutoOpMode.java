@@ -18,8 +18,10 @@ public abstract class AutoOpMode extends RobotOpMode {
     protected PoseFactory poseFactory = PoseFactory.degrees();
     protected Positions positions = new Positions(poseFactory);
 
+    /// Pose at which the robot starts
     abstract LazyPose startPose();
 
+    /// The operations the robot does during autoOpMode
     abstract Command autoRoutine();
 
     @FunctionalInterface
@@ -64,6 +66,7 @@ public abstract class AutoOpMode extends RobotOpMode {
         telemetry.addData("Heading", Math.toDegrees(drivetrain.pose().heading()));
     }
 
+    /// Wait 2 1/2 seconds
     Command fakeShoot() {
         return Commands.waitMs(2500);
     }

@@ -25,20 +25,26 @@ public abstract class RobotOpMode extends LinearOpMode {
     private double _deltaTime = 0;
     private final ElapsedTime deltaTimeTimer = new ElapsedTime();
 
+    /// Time since last tick in seconds
     public double deltaTime() {
         return _deltaTime;
     }
 
     protected CommandController controller;
 
+    /// Called when the init button is pressed on the control hub
     protected abstract void opModeInit();
 
+    /// Called every tick when the robot is initialized
     protected abstract void opModeInitLoop();
 
+    /// Called when the start button is pressed on the control hub
     protected abstract void opModeStart();
 
+    /// Called every tick when the robot is in an opMode
     protected abstract void opModeLoop();
 
+    /// Resets the heading of the robot
     protected Command resetHeading() {
         return Commands.instant(() -> {
             drivetrain.resetHeading();
@@ -46,6 +52,7 @@ public abstract class RobotOpMode extends LinearOpMode {
         });
     }
 
+    /// Sets alliance side
     protected Command setAlliance(Alliance newAlliance) {
         return Commands.instant(() -> alliance = newAlliance);
     }

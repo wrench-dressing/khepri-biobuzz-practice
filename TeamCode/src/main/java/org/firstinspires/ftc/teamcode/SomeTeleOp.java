@@ -16,7 +16,6 @@ public class SomeTeleOp extends RobotOpMode {
         controller.leftTrigger.whileTrue(intake.intakeBack());
         controller.rightBumper.whileTrue(intake.outtakeThroughFront());
         controller.leftBumper.whileTrue(intake.outtakeThroughBack());
-        controller.west.whileTrue(drivetrain.autoTarget(this::getTargetCell));
         controller.back.onTrue(resetHeading());
 
         controller.start.onTrue(drivetrain.updatePositionForSure(Vector2D.cartesian(7, 137)));
@@ -32,7 +31,14 @@ public class SomeTeleOp extends RobotOpMode {
 
     @Override
     protected void opModeStart() {
-        Scheduler.schedule(drivetrain.drive(() -> -gamepad1.left_stick_y, () -> -gamepad1.left_stick_x, () -> -gamepad1.right_stick_x));
+        Scheduler.schedule(
+                drivetrain.drive(
+                        () -> -gamepad1.left_stick_y,
+                        () -> -gamepad1.left_stick_x,
+                        () -> -gamepad1.right_stick_x,
+                        () -> gamepad1.x ? getTargetCell() : null
+                )
+        );
     }
 
     @Override

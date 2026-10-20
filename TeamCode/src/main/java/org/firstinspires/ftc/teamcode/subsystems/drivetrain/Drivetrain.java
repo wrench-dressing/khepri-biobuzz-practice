@@ -27,15 +27,18 @@ public class Drivetrain {
         Scheduler.schedule(Commands.infinite(follower::update));
     }
 
+    /// Resets the robot's heading
     public void resetHeading() {
         follower.localizer.setHeading(0);
         follower.manual(0, 0, 0);
     }
 
+    /// The robot's position on the field
     public Pose pose() {
         return follower.pose();
     }
 
+    /// Sets the current robot's position on the field to a pose
     public void setPose(Pose pose) {
         follower.setPose(pose);
     }
@@ -44,6 +47,7 @@ public class Drivetrain {
         return PedroCommands.follow(follower, path);
     }
 
+    /// Sets the current robot's position on the field to a pose, clears its hold state, and maintains its heading
     public Command updatePositionForSure(Vector2D position) {
         return Commands.instant(() -> {
             follower.setPose(position.toPose(follower.localizer.pose().heading()));
@@ -61,6 +65,7 @@ public class Drivetrain {
         });
     }
 
+    /// Drive
     public Command drive(DoubleSupplier forward, DoubleSupplier strafe, DoubleSupplier turn) {
         return Commands.infinite(() ->
                 ManualDrive.driveOrHold(

@@ -9,6 +9,8 @@ import org.firstinspires.ftc.teamcode.utils.Alliance;
 
 @TeleOp(name = "Some TeleOp")
 public class SomeTeleOp extends RobotOpMode {
+
+    @Override
     protected void opModeInit() {
         controller.rightTrigger.whileTrue(intake.intakeFront());
         controller.leftTrigger.whileTrue(intake.intakeBack());
@@ -33,6 +35,7 @@ public class SomeTeleOp extends RobotOpMode {
         Scheduler.schedule(drivetrain.drive(() -> -gamepad1.left_stick_y, () -> -gamepad1.left_stick_x, () -> -gamepad1.right_stick_x));
     }
 
+    @Override
     protected void opModeLoop() {
         telemetry.addData("target", getTargetCell());
         telemetry.addData("Pose X", Math.round(drivetrain.pose().x()));

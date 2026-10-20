@@ -12,9 +12,11 @@ import com.pedropathing.math.Pose;
 import com.pedropathing.math.Vector2D;
 import com.pedropathing.paths.Path;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
 import org.firstinspires.ftc.teamcode.robot.RobotOpMode;
 import org.firstinspires.ftc.teamcode.utils.Cell;
+import org.firstinspires.ftc.teamcode.utils.ShortestAngle;
 
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
@@ -55,28 +57,36 @@ public class Drivetrain {
         });
     }
 
-    public Command autoTarget(Supplier<Cell> cellSupplier) {
-        return Commands.infinite(() -> {
-            Cell cell = cellSupplier.get();
-            Vector2D cellPosition = cell.cellPosition();
-            Vector2D robotPosition = follower.pose().toVector2D();
-            double angleFounding = cellPosition.minus(robotPosition).theta();
-            follower.hold(follower.pose().withHeading(angleFounding));
-        });
+    /// Gets the angle needed to turn by to point to a cell
+    public double turnAngleToCell(Cell cell) {
+        Pose currentPose = pose();
+        Vector2D cellPosition = cell.cellPosition();
+        Vector2D robotPosition = currentPose.toVector2D();
+
+        double requiredAngle = cellPosition.minus(robotPosition).theta();
+        double currentAngle = currentPose.heading();
+        return ShortestAngle.betweenRadians(currentAngle, requiredAngle);
     }
 
     /// Drive
-    public Command drive(DoubleSupplier forward, DoubleSupplier strafe, DoubleSupplier turn) {
-        return Commands.infinite(() ->
-                ManualDrive.driveOrHold(
-                        follower,
-                        ManualDrive.fieldCentric(
-                                forward.getAsDouble(),
-                                strafe.getAsDouble(),
-                                turn.getAsDouble(),
-                                follower.pose().heading()
-                        )
-                )
-        ).setInterruptedBehavior(InterruptedBehavior.SUSPEND);
+    public Command drive(DoubleSupplier forward, DoubleSupplier strafe, DoubleSupplier turn, Supplier<Cell> whatToAutotargetTo) {
+        return Commands.infinite(() -> {
+            Cell cell = whatToAutotargetTo.get();
+            double turnPower = cell != null
+                    ? (turnAngleToCell(cell))
+                    : turn.getAsDouble();
+
+            ManualDrive.driveOrHold(
+                    follower,
+                    ManualDrive.fieldCentric(
+                            forward.getAsDouble(),
+                            strafe.getAsDouble(),
+                            turnPower,
+                            follower.pose().heading()
+                    )
+            );
+
+
+        }).setInterruptedBehavior(InterruptedBehavior.SUSPEND);
     }
 }

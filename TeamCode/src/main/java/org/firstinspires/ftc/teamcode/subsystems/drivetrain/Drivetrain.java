@@ -12,7 +12,6 @@ import com.pedropathing.math.Pose;
 import com.pedropathing.math.Vector2D;
 import com.pedropathing.paths.Path;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
 import org.firstinspires.ftc.teamcode.robot.RobotOpMode;
 import org.firstinspires.ftc.teamcode.utils.Cell;
@@ -62,7 +61,6 @@ public class Drivetrain {
         Pose currentPose = pose();
         Vector2D cellPosition = cell.cellPosition();
         Vector2D robotPosition = currentPose.toVector2D();
-
         double requiredAngle = cellPosition.minus(robotPosition).theta();
         double currentAngle = currentPose.heading();
         return ShortestAngle.betweenRadians(currentAngle, requiredAngle);
@@ -72,8 +70,8 @@ public class Drivetrain {
     public Command drive(DoubleSupplier forward, DoubleSupplier strafe, DoubleSupplier turn, Supplier<Cell> whatToAutotargetTo) {
         return Commands.infinite(() -> {
             Cell cell = whatToAutotargetTo.get();
-            double turnPower = cell != null
-                    ? (turnAngleToCell(cell))
+            double turnPower = (cell != null)
+                    ? turnAngleToCell(cell) / Math.PI
                     : turn.getAsDouble();
 
             ManualDrive.driveOrHold(
